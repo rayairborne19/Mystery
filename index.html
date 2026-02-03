@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💖</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif; }
+        body { background-color: #ffebf3; background-image: radial-gradient(#ffcfe0 1.5px, transparent 1.5px), radial-gradient(#ffcfe0 1.5px, #ffebf3 1.5px); background-size: 60px 60px; background-position: 0 0, 30px 30px; color: #9d174d; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; overflow-x: hidden; }
+        .container { max-width: 800px; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px; }
+        .header { margin-bottom: 30px; position: relative; }
+        h1 { font-size: 2.8rem; margin-bottom: 15px; color: #db2777; text-shadow: 2px 2px 0px #fbcfe8; position: relative; padding: 15px; }
+        h1:after { content: "💖"; position: absolute; top: -5px; right: 10px; font-size: 1.8rem; }
+        h2 { font-size: 1.8rem; color: #ec4899; margin-bottom: 10px; }
+        .subtitle { font-size: 1.3rem; color: #be185d; margin-bottom: 20px; font-style: italic; }
+        
+        /* Updated cat container with GIF */
+        .cat-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0 30px;
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+        
+        .cat-gif-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(219, 39, 119, 0.2);
+            border: 5px solid #fbcfe8;
+            margin-bottom: 15px;
+        }
+        
+        .cat-gif {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .cat-gif:hover {
+            transform: scale(1.05);
+        }
+        
+        .cat-emojis {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .cat {
+            font-size: 3.5rem;
+            animation: float 3s ease-in-out infinite;
+            cursor: pointer;
+        }
+        
+        .cat:nth-child(2) { animation-delay: 0.5s; }
+        .cat:nth-child(3) { animation-delay: 1s; }
+        
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        
+        .valentine-question { background-color: #fff; border-radius: 25px; padding: 30px; box-shadow: 0 10px 30px rgba(219, 39, 119, 0.15); border: 5px dashed #fbcfe8; width: 100%; max-width: 600px; margin-bottom: 30px; transition: all 0.3s ease; }
+        .button-container { display: flex; justify-content: center; gap: 20px; margin-top: 30px; flex-wrap: wrap; }
+        .btn { padding: 18px 40px; font-size: 1.8rem; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: bold; box-shadow: 0 6px 0 rgba(0, 0, 0, 0.1); min-width: 160px; }
+        .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.1); }
+        .yes-btn { background-color: #f472b6; color: white; }
+        .yes-btn:hover { background-color: #ec4899; transform: scale(1.05); }
+        .no-btn { background-color: #a5b4fc; color: white; }
+        .no-btn:hover { background-color: #818cf8; transform: scale(1.05); }
+        .are-you-sure { font-size: 2.2rem; color: #db2777; margin-top: 25px; font-weight: bold; opacity: 0; height: 0; overflow: hidden; transition: all 0.5s ease; }
+        .are-you-sure.show { opacity: 1; height: auto; margin-top: 25px; }
+        .food-selection, .date-selection { display: none; width: 100%; max-width: 800px; background-color: #fff; border-radius: 25px; padding: 30px; box-shadow: 0 10px 30px rgba(219, 39, 119, 0.15); border: 5px dashed #fbcfe8; margin-top: 20px; }
+        .food-selection.show, .date-selection.show { display: block; animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Updated food options grid for more items */
+        .food-options { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+            gap: 18px; 
+            margin-top: 25px; 
+        }
+        
+        .date-options { display: flex; flex-direction: column; gap: 25px; margin-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .date-option, .food-option { border-radius: 20px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; border: 4px solid #fbcfe8; background-color: white; }
+        .date-option:hover, .food-option:hover { transform: translateY(-10px); border-color: #ec4899; box-shadow: 0 15px 25px rgba(219, 39, 119, 0.2); }
+        .date-option.selected, .food-option.selected { border-color: #db2777; box-shadow: 0 0 0 4px #fbcfe8, 0 15px 25px rgba(219, 39, 119, 0.2); transform: translateY(-10px); }
+        .food-img, .date-img { height: 130px; width: 100%; background-color: #fdf2f8; display: flex; align-items: center; justify-content: center; font-size: 3.2rem; }
+        .food-name { padding: 12px 8px; font-size: 1.3rem; font-weight: bold; color: #9d174d; background-color: #fce7f3; }
+        .date-name { padding: 20px 10px; font-size: 1.6rem; font-weight: bold; color: #9d174d; background-color: #fce7f3; }
+        .date-details { font-size: 1.2rem; color: #ec4899; margin-top: 5px; font-weight: normal; }
+        .selection-message, .final-message { font-size: 1.6rem; margin-top: 30px; color: #be185d; padding: 15px; background-color: #fdf2f8; border-radius: 15px; display: none; }
+        .final-message { font-size: 1.8rem; padding: 20px; }
+        .selection-message.show, .final-message.show { display: block; animation: fadeIn 0.5s ease; }
+        .footer { margin-top: 30px; font-size: 1.1rem; color: #be185d; text-align: center; padding: 20px; width: 100%; }
+        .heart { color: #db2777; animation: heartbeat 1.5s infinite; display: inline-block; }
+        @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+        .nav-buttons { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        .nav-btn { padding: 12px 30px; font-size: 1.4rem; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: bold; background-color: #f472b6; color: white; min-width: 140px; }
+        .nav-btn:hover { background-color: #ec4899; transform: scale(1.05); }
+        
+        /* Results display */
+        .results-container {
+            display: none;
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px dashed #f472b6;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .results-container.show {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .secret-results {
+            font-size: 1.2rem;
+            color: #9d174d;
+            line-height: 1.6;
+            text-align: left;
+            padding: 15px;
+            background: #fdf2f8;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        
+        .secret-code {
+            font-family: monospace;
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 1.1rem;
+            word-break: break-all;
+        }
+        
+        #shareBtn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #ec4899;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        #shareBtn:hover {
+            background: #db2777;
+        }
+        
+        /* Cat love message */
+        .cat-love-message {
+            font-size: 1.2rem;
+            color: #ec4899;
+            margin-top: 10px;
+            font-style: italic;
+            background: #fdf2f8;
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 2px dashed #fbcfe8;
+        }
+        
+        /* Cat paw prints */
+        .paw-prints {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #f472b6;
+            opacity: 0.7;
+        }
+        
+        .paw-1 {
+            top: 10px;
+            left: 10px;
+            transform: rotate(-15deg);
+        }
+        
+        .paw-2 {
+            bottom: 10px;
+            right: 10px;
+            transform: rotate(15deg);
+        }
+        
+        /* Food option counter */
+        .food-counter {
+            font-size: 1.1rem;
+            color: #ec4899;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        @media (max-width: 768px) { 
+            h1 { font-size: 2.2rem; } 
+            h2 { font-size: 1.5rem; } 
+            .subtitle { font-size: 1.1rem; } 
+            .btn { padding: 15px 30px; font-size: 1.5rem; min-width: 140px; } 
+            .food-options { grid-template-columns: repeat(2, 1fr); } 
+            .date-options { max-width: 100%; } 
+            .cat { font-size: 2.8rem; }
+            .cat-gif-container { width: 180px; height: 180px; }
+            .food-img { height: 110px; font-size: 2.8rem; }
+            .food-name { font-size: 1.2rem; padding: 10px 5px; }
+        }
+        
+        @media (max-width: 480px) { 
+            h1 { font-size: 1.8rem; } 
+            .valentine-question, .food-selection, .date-selection { padding: 20px; } 
+            .button-container { gap: 15px; } 
+            .btn { padding: 12px 25px; font-size: 1.3rem; min-width: 120px; } 
+            .food-options { grid-template-columns: repeat(2, 1fr); } 
+            .food-img, .date-img { height: 100px; font-size: 2.5rem; } 
+            .date-name { font-size: 1.4rem; padding: 15px 10px; }
+            .cat-gif-container { width: 160px; height: 160px; }
+            .cat { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Will You Be My Valentine? <span class="heart">💖</span></h1>
+            <p class="subtitle">(Niet op Valentine's Day... because every day with you is special!)</p>
+            
+            <!-- Updated cat section with GIF -->
+            <div class="cat-container">
+                <div class="cat-gif-container">
+                    <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2gycGJlb2V1bmQ4bGdtdnR0NTJ4ZmE0bzRjaGZhMnR0czZ3c2t3ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13CoXDiaCcCoyk/giphy.gif" 
+                         alt="Cute cat with hearts" 
+                         class="cat-gif">
+                    <div class="paw-prints paw-1">🐾</div>
+                    <div class="paw-prints paw-2">🐾</div>
+                </div>
+                
+                <p class="cat-love-message">Kitties approve of this Valentine's message! 😻</p>
+                
+                <div class="cat-emojis">
+                    <div class="cat">🐱</div>
+                    <div class="cat">😻</div>
+                    <div class="cat">🐈</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="valentine-question" id="valentineQuestion">
+            <h2>My dearest love,</h2>
+            <p style="font-size: 1.4rem; line-height: 1.5; margin-bottom: 20px;">
+                You make every day brighter just by being in it. 
+                I'm so grateful to have you as my wife, my partner, my everything.
+            </p>
+            <p style="font-size: 1.6rem; font-weight: bold; color: #db2777; margin: 25px 0;">
+                Will you be my Valentine today... and every day?
+            </p>
+            
+            <div class="button-container">
+                <button class="btn yes-btn" id="yesBtn">YES! 💝</button>
+                <button class="btn no-btn" id="noBtn">No 😿</button>
+            </div>
+            
+            <div class="are-you-sure" id="areYouSure">Ben je zeker??? 😿💔</div>
+        </div>
+        
+        <div class="food-selection" id="foodSelection">
+            <h2>A delicious meal for the wifey :3 🎉</h2>
+            <p style="font-size: 1.4rem; margin: 15px 0 10px;">
+                Pick what you'd like for our special Valentine meal:
+            </p>
+            <p style="font-size: 1.2rem; color: #ec4899; margin-bottom: 15px;">
+                (Je kan alleen eentje kiezen ja :p)
+            </p>
+            
+            <div class="food-options">
+                <div class="food-option" data-food="pizza">
+                    <div class="food-img">🍕</div>
+                    <div class="food-name">Pizza</div>
+                </div>
+                <div class="food-option" data-food="burgers">
+                    <div class="food-img">🍔🍟</div>
+                    <div class="food-name">Burgers & Fries</div>
+                </div>
+                <div class="food-option" data-food="steak">
+                    <div class="food-img">🥩</div>
+                    <div class="food-name">Steak</div>
+                </div>
+                <div class="food-option" data-food="pasta">
+                    <div class="food-img">🍝</div>
+                    <div class="food-name">Pasta</div>
+                </div>
+                <div class="food-option" data-food="thai">
+                    <div class="food-img">🍜</div>
+                    <div class="food-name">Thai<br><span style="font-size: 0.9rem; color: #ec4899;">(Garden of Eden)</span></div>
+                </div>
+                <div class="food-option" data-food="indian">
+                    <div class="food-img">🍛</div>
+                    <div class="food-name">Indian</div>
+                </div>
+                <div class="food-option" data-food="chinese">
+                    <div class="food-img">🥡</div>
+                    <div class="food-name">Chinese</div>
+                </div>
+                <div class="food-option" data-food="javanese">
+                    <div class="food-img">🍚</div>
+                    <div class="food-name">Javanese</div>
+                </div>
+            </div>
+            
+            <p class="food-counter">8 delicious options to choose from! 😋</p>
+            
+            <div class="selection-message" id="selectionMessage"></div>
+            
+            <div class="nav-buttons" id="foodNavButtons" style="display: none;">
+                <button class="nav-btn" id="continueToDatesBtn">Continue to Dates</button>
+            </div>
+        </div>
+        
+        <div class="date-selection" id="dateSelection">
+            <h2>Perfect! Now pick a date for our dinner 🗓️💕</h2>
+            <p style="font-size: 1.4rem; margin: 15px 0 10px;">
+                Choose when you'd like to have our special Valentine dinner:
+            </p>
+            <p style="font-size: 1.2rem; color: #ec4899; margin-bottom: 15px;">
+                (Pick one date for our romantic evening!)
+            </p>
+            
+            <div class="date-options">
+                <div class="date-option" data-date="feb6">
+                    <div class="date-img">📅</div>
+                    <div class="date-name">
+                        Friday, February 6th
+                        <div class="date-details">at 18:00</div>
+                    </div>
+                </div>
+                <div class="date-option" data-date="feb13">
+                    <div class="date-img">💖</div>
+                    <div class="date-name">
+                        Friday, February 13th
+                        <div class="date-details">at 18:00</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="final-message" id="finalMessage"></div>
+            
+            <div class="nav-buttons" id="dateNavButtons" style="display: none;">
+                <button class="nav-btn" id="backToFoodBtn">Back to Food</button>
+                <button class="nav-btn" id="shareResultsBtn" style="display: none;">Share Results 💌</button>
+            </div>
+        </div>
+        
+        <!-- Results display for you -->
+        <div class="results-container" id="resultsContainer">
+            <h3>📊 Secret Results (For Your Eyes Only)</h3>
+            <div class="secret-results" id="secretResults">
+                No selections made yet...
+            </div>
+            <button id="shareBtn" onclick="shareResults()">Copy Results to Clipboard</button>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+                Copy this and send it to yourself or save it somewhere
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>Made with <span class="heart">💖</span> for the most amazing wife in the world</p>
+            <p style="margin-top: 10px; font-size: 1rem;">P.S. Poes zegt "Meow" (omdat dat ook "I love you" betekent in cat language hehe)</p>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const areYouSure = document.getElementById('areYouSure');
+        const valentineQuestion = document.getElementById('valentineQuestion');
+        const foodSelection = document.getElementById('foodSelection');
+        const dateSelection = document.getElementById('dateSelection');
+        const foodOptions = document.querySelectorAll('.food-option');
+        const dateOptions = document.querySelectorAll('.date-option');
+        const selectionMessage = document.getElementById('selectionMessage');
+        const finalMessage = document.getElementById('finalMessage');
+        const foodNavButtons = document.getElementById('foodNavButtons');
+        const dateNavButtons = document.getElementById('dateNavButtons');
+        const continueToDatesBtn = document.getElementById('continueToDatesBtn');
+        const backToFoodBtn = document.getElementById('backToFoodBtn');
+        const shareResultsBtn = document.getElementById('shareResultsBtn');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const secretResults = document.getElementById('secretResults');
+        const catGif = document.querySelector('.cat-gif');
+        
+        // Alternative cat GIFs in case the primary one doesn't load
+        const catGifs = [
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2gycGJlb2V1bmQ4bGdtdnR0NTJ4ZmE0bzRjaGZhMnR0czZ3c2t3ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13CoXDiaCcCoyk/giphy.gif', // Cat with hearts
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbTcyaXl5bHd6dnNmbnBxcG9tZXN1cHd4cWt1ODF4cWx6Z3E1MDBsaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oriO13F3xHQVW6Nxe/giphy.gif', // Cat blinking hearts
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdW91czYwN3J5dnNwY25xdXFnZ2F4N3NwM3J3cDZtdDN3Nm5rZHN0dyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ICOgUNjpvO0PC/giphy.gif', // Cat love
+            'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2tqNTIzNm55bDgwYW53Z3A2cm9sd3hkbDluZTh2b3d4ZmM1d2FzZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mlvseq9yvZhba/giphy.gif' // Cat with bouquet
+        ];
+        
+        // Track selections
+        let selectedFood = null;
+        let selectedDate = null;
+        let noClicked = false;
+        let currentGifIndex = 0;
+        
+        // Handle "No" button click
+        noBtn.addEventListener('click', function() {
+            if (!noClicked) {
+                // First click on "No" button
+                noClicked = true;
+                
+                // Change both buttons to say "YES!"
+                yesBtn.textContent = "YES! 💝";
+                noBtn.textContent = "YES! 💝";
+                
+                // Change button colors to pink
+                noBtn.classList.remove('no-btn');
+                noBtn.classList.add('yes-btn');
+                
+                // Show "Ben je zeker???" message
+                areYouSure.textContent = "Ben je zekerrrr??? 😿💔";
+                areYouSure.classList.add('show');
+            } else {
+                // Second click (after both buttons say YES)
+                // Both buttons now lead to the food selection
+                showFoodSelection();
+            }
+        });
+        
+        // Handle "Yes" button click
+        yesBtn.addEventListener('click', function() {
+            showFoodSelection();
+        });
+        
+        // Function to show food selection
+        function showFoodSelection() {
+            valentineQuestion.style.display = "none";
+            foodSelection.classList.add('show');
+            
+            // Add a cute message
+            setTimeout(() => {
+                selectionMessage.textContent = "Yayyyyy! Oki, wat wil je graag eten?... 😻";
+                selectionMessage.classList.add('show');
+            }, 500);
+        }
+        
+        // Handle food selection
+        foodOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                foodOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Get the selected food
+                selectedFood = this.getAttribute('data-food');
+                const foodNames = {
+                    pizza: "Pizza 🍕",
+                    burgers: "Burgers & Fries 🍔🍟",
+                    steak: "Steak 🥩",
+                    pasta: "Pasta 🍝",
+                    thai: "Thai (Garden of Eden) 🍜",
+                    indian: "Indian 🍛",
+                    chinese: "Chinese 🥡",
+                    javanese: "Javanese 🍚"
+                };
+                
+                // Show selection message
+                selectionMessage.textContent = `Heerlijk! ${foodNames[selectedFood]} it is! 💖`;
+                selectionMessage.classList.add('show');
+                
+                // Show the continue button
+                foodNavButtons.style.display = "flex";
+                
+                // Update results
+                updateResults();
+                
+                // Scroll to show the message
+                selectionMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            });
+        });
+        
+        // Handle continue to dates button
+        continueToDatesBtn.addEventListener('click', function() {
+            if (selectedFood) {
+                foodSelection.classList.remove('show');
+                setTimeout(() => {
+                    foodSelection.style.display = "none";
+                    dateSelection.classList.add('show');
+                    
+                    // Add a cute message
+                    setTimeout(() => {
+                        finalMessage.textContent = `Perfect! We'll have ${getFoodName(selectedFood)} on...`;
+                        finalMessage.classList.add('show');
+                    }, 500);
+                    
+                    // Show the back button
+                    dateNavButtons.style.display = "flex";
+                    shareResultsBtn.style.display = "none";
+                }, 300);
+            }
+        });
+        
+        // Handle date selection
+        dateOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                dateOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Get the selected date
+                selectedDate = this.getAttribute('data-date');
+                
+                // Show final confirmation message
+                finalMessage.innerHTML = `Perfect! We'll have ${getFoodName(selectedFood)} on <strong>${getDateName(selectedDate)}</strong>!<br><br>I can't wait for our special date! 💖😻`;
+                finalMessage.classList.add('show');
+                
+                // Show share button
+                shareResultsBtn.style.display = "block";
+                
+                // Update results and show them
+                updateResults();
+                resultsContainer.classList.add('show');
+                
+                // Scroll to results
+                setTimeout(() => {
+                    resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 800);
+            });
+        });
+        
+        // Handle back to food button
+        backToFoodBtn.addEventListener('click', function() {
+            dateSelection.classList.remove('show');
+            setTimeout(() => {
+                dateSelection.style.display = "none";
+                foodSelection.classList.add('show');
+                
+                // Hide the back button on food page
+                dateNavButtons.style.display = "none";
+                resultsContainer.classList.remove('show');
+            }, 300);
+        });
+        
+        // Handle share results button
+        shareResultsBtn.addEventListener('click', function() {
+            shareResults();
+        });
+        
+        // Helper function to get food name
+        function getFoodName(foodKey) {
+            const foodNames = {
+                pizza: "Pizza 🍕",
+                burgers: "Burgers & Fries 🍔🍟",
+                steak: "Steak 🥩",
+                pasta: "Pasta 🍝",
+                thai: "Thai (Garden of Eden) 🍜",
+                indian: "Indian 🍛",
+                chinese: "Chinese 🥡",
+                javanese: "Javanese 🍚"
+            };
+            return foodNames[foodKey] || "delicious food";
+        }
+        
+        // Helper function to get date name
+        function getDateName(dateKey) {
+            const dateNames = {
+                feb6: "Friday, February 6th at 18:00",
+                feb13: "Friday, February 13th at 18:00"
+            };
+            return dateNames[dateKey] || "a special date";
+        }
+        
+        // Update results display
+        function updateResults() {
+            let resultsText = "";
+            
+            if (selectedFood && selectedDate) {
+                resultsText = `
+                <strong>🎉 Valentine Selection Results 🎉</strong><br><br>
+                <strong>Food Choice:</strong> ${getFoodName(selectedFood)}<br>
+                <strong>Date Choice:</strong> ${getDateName(selectedDate)}<br>
+                <strong>Time:</strong> ${new Date().toLocaleString()}<br><br>
+                <em>She said YES to being your Valentine! 💖</em>
+                `;
+            } else if (selectedFood) {
+                resultsText = `
+                <strong>Partial Results:</strong><br>
+                <strong>Food Choice:</strong> ${getFoodName(selectedFood)}<br>
+                <em>No date selected yet...</em>
+                `;
+            } else {
+                resultsText = "No selections made yet...";
+            }
+            
+            secretResults.innerHTML = resultsText;
+        }
+        
+        // Share results function
+        function shareResults() {
+            const resultsText = `
+VALENTINE SELECTION RESULTS 💖
+
+Food Choice: ${getFoodName(selectedFood)}
+Date Choice: ${getDateName(selectedDate)}
+Selected at: ${new Date().toLocaleString()}
+
+She said YES to being your Valentine! 💕
+            `;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(resultsText).then(() => {
+                alert("Results copied to clipboard! 📋\n\nPaste them somewhere safe (like a text to yourself)");
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = resultsText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert("Results copied to clipboard! 📋");
+            });
+        }
+        
+        // Cat GIF interaction - change GIF on click
+        catGif.addEventListener('click', function() {
+            currentGifIndex = (currentGifIndex + 1) % catGifs.length;
+            this.src = catGifs[currentGifIndex];
+            
+            // Add a cute meow sound effect (simulated)
+            const meows = ["😸 Meow!", "😻 Purrr!", "🐱 Meeeoww!", "😽 Love you!"];
+            const randomMeow = meows[Math.floor(Math.random() * meows.length)];
+            
+            // Show a temporary message
+            const message = document.querySelector('.cat-love-message');
+            const originalText = message.textContent;
+            message.textContent = randomMeow;
+            message.style.color = "#db2777";
+            message.style.fontWeight = "bold";
+            
+            setTimeout(() => {
+                message.textContent = originalText;
+                message.style.color = "";
+                message.style.fontWeight = "";
+            }, 1500);
+        });
+        
+        // Add some interactivity to the cats
+        const cats = document.querySelectorAll('.cat');
+        cats.forEach(cat => {
+            cat.addEventListener('click', function() {
+                this.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 300);
+            });
+        });
+        
+        // Preload alternative GIFs for better user experience
+        window.addEventListener('load', function() {
+            catGifs.forEach((gifUrl, index) => {
+                if (index > 0) { // Skip first one as it's already loaded
+                    const img = new Image();
+                    img.src = gifUrl;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
