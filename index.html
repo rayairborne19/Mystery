@@ -105,12 +105,50 @@
         .nav-btn { padding: 12px 30px; font-size: 1.4rem; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; font-weight: bold; background-color: #f472b6; color: white; min-width: 140px; }
         .nav-btn:hover { background-color: #ec4899; transform: scale(1.05); }
         
+        /* Custom food input styling */
+        .other-food-input {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: #fdf2f8;
+            border-radius: 15px;
+            border: 3px dashed #fbcfe8;
+        }
+        
+        .other-food-input.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .other-food-input input {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.4rem;
+            border: 3px solid #f472b6;
+            border-radius: 12px;
+            margin-top: 10px;
+            text-align: center;
+            color: #9d174d;
+        }
+        
+        .other-food-input input:focus {
+            outline: none;
+            border-color: #db2777;
+            box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.2);
+        }
+        
+        .other-food-input .input-label {
+            font-size: 1.3rem;
+            color: #ec4899;
+            font-weight: bold;
+        }
+        
         /* Results display */
         .results-container {
             display: none;
             margin-top: 30px;
             background: white;
-            padding: 20px;
+            padding: 25px;
             border-radius: 15px;
             border: 3px dashed #f472b6;
             max-width: 500px;
@@ -122,7 +160,7 @@
             animation: fadeIn 0.8s ease;
         }
         
-        .secret-results {
+        .results-content {
             font-size: 1.2rem;
             color: #9d174d;
             line-height: 1.6;
@@ -146,17 +184,20 @@
         
         #shareBtn {
             margin-top: 15px;
-            padding: 10px 20px;
+            padding: 12px 25px;
             background: #ec4899;
             color: white;
             border: none;
             border-radius: 25px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
         
         #shareBtn:hover {
             background: #db2777;
+            transform: scale(1.05);
         }
         
         /* Cat love message */
@@ -210,6 +251,7 @@
             .cat-gif-container { width: 180px; height: 180px; }
             .food-img { height: 110px; font-size: 2.8rem; }
             .food-name { font-size: 1.2rem; padding: 10px 5px; }
+            .other-food-input input { font-size: 1.2rem; padding: 12px; }
         }
         
         @media (max-width: 480px) { 
@@ -311,9 +353,23 @@
                     <div class="food-img">🍚</div>
                     <div class="food-name">Javanese</div>
                 </div>
+                <div class="food-option" data-food="other">
+                    <div class="food-img">✨</div>
+                    <div class="food-name">Other</div>
+                </div>
             </div>
             
-            <p class="food-counter">8 delicious options to choose from! 😋</p>
+            <!-- Other food input section -->
+            <div class="other-food-input" id="otherFoodInput">
+                <div class="input-label">Ooooh, something special! What would you like? 🥰</div>
+                <input type="text" id="otherFoodText" placeholder="Type your favorite food here..." maxlength="50">
+                <div class="nav-buttons" style="margin-top: 20px;">
+                    <button class="nav-btn" id="confirmOtherFoodBtn">Confirm 💖</button>
+                    <button class="nav-btn" id="backToOptionsBtn" style="background-color: #a5b4fc;">Back to Options</button>
+                </div>
+            </div>
+            
+            <p class="food-counter">9 delicious options to choose from! 😋</p>
             
             <div class="selection-message" id="selectionMessage"></div>
             
@@ -356,15 +412,15 @@
             </div>
         </div>
         
-        <!-- Results display for you -->
+        <!-- Results display -->
         <div class="results-container" id="resultsContainer">
-            <h3>📊 Secret Results (For Your Eyes Only)</h3>
-            <div class="secret-results" id="secretResults">
+            <h3>🎉 Valentine Date Results 🎉</h3>
+            <div class="results-content" id="resultsContent">
                 No selections made yet...
             </div>
-            <button id="shareBtn" onclick="shareResults()">Copy Results to Clipboard</button>
+            <button id="shareBtn" onclick="shareResults()">📋 Copy Results & Send to Your Lovely Husband!</button>
             <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
-                Copy this and send it to yourself or save it somewhere
+                Copy the text above and send it to your amazing husband! He's waiting to plan your perfect date! 💕
             </p>
         </div>
         
@@ -392,8 +448,14 @@
         const backToFoodBtn = document.getElementById('backToFoodBtn');
         const shareResultsBtn = document.getElementById('shareResultsBtn');
         const resultsContainer = document.getElementById('resultsContainer');
-        const secretResults = document.getElementById('secretResults');
+        const resultsContent = document.getElementById('resultsContent');
         const catGif = document.querySelector('.cat-gif');
+        
+        // Other food elements
+        const otherFoodInput = document.getElementById('otherFoodInput');
+        const otherFoodText = document.getElementById('otherFoodText');
+        const confirmOtherFoodBtn = document.getElementById('confirmOtherFoodBtn');
+        const backToOptionsBtn = document.getElementById('backToOptionsBtn');
         
         // Alternative cat GIFs in case the primary one doesn't load
         const catGifs = [
@@ -406,6 +468,7 @@
         // Track selections
         let selectedFood = null;
         let selectedDate = null;
+        let customFoodText = "";
         let noClicked = false;
         let currentGifIndex = 0;
         
@@ -461,30 +524,85 @@
                 
                 // Get the selected food
                 selectedFood = this.getAttribute('data-food');
-                const foodNames = {
-                    pizza: "Pizza 🍕",
-                    burgers: "Burgers & Fries 🍔🍟",
-                    steak: "Steak 🥩",
-                    pasta: "Pasta 🍝",
-                    thai: "Thai (Garden of Eden) 🍜",
-                    indian: "Indian 🍛",
-                    chinese: "Chinese 🥡",
-                    javanese: "Javanese 🍚"
-                };
                 
-                // Show selection message
-                selectionMessage.textContent = `Heerlijk! ${foodNames[selectedFood]} it is! 💖`;
-                selectionMessage.classList.add('show');
-                
-                // Show the continue button
-                foodNavButtons.style.display = "flex";
-                
-                // Update results
-                updateResults();
-                
-                // Scroll to show the message
-                selectionMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                // Show the input field if "Other" is selected
+                if (selectedFood === "other") {
+                    otherFoodInput.classList.add('show');
+                    foodNavButtons.style.display = "none";
+                    selectionMessage.textContent = "";
+                    selectionMessage.classList.remove('show');
+                    otherFoodText.focus();
+                } else {
+                    otherFoodInput.classList.remove('show');
+                    customFoodText = "";
+                    
+                    const foodNames = {
+                        pizza: "Pizza 🍕",
+                        burgers: "Burgers & Fries 🍔🍟",
+                        steak: "Steak 🥩",
+                        pasta: "Pasta 🍝",
+                        thai: "Thai (Garden of Eden) 🍜",
+                        indian: "Indian 🍛",
+                        chinese: "Chinese 🥡",
+                        javanese: "Javanese 🍚",
+                        other: "Something special! ✨"
+                    };
+                    
+                    // Show selection message
+                    selectionMessage.textContent = `Heerlijk! ${foodNames[selectedFood]} it is! 💖`;
+                    selectionMessage.classList.add('show');
+                    
+                    // Show the continue button
+                    foodNavButtons.style.display = "flex";
+                    
+                    // Update results
+                    updateResults();
+                    
+                    // Scroll to show the message
+                    selectionMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
             });
+        });
+        
+        // Handle confirm other food button
+        confirmOtherFoodBtn.addEventListener('click', function() {
+            if (otherFoodText.value.trim() === "") {
+                alert("Please tell me what you'd like to eat! 🥺");
+                otherFoodText.focus();
+                return;
+            }
+            
+            customFoodText = otherFoodText.value.trim();
+            selectionMessage.textContent = `Heerlijk! "${customFoodText}" it is! 💖 What a creative choice!`;
+            selectionMessage.classList.add('show');
+            
+            // Hide input and show continue button
+            otherFoodInput.classList.remove('show');
+            foodNavButtons.style.display = "flex";
+            
+            // Update results
+            updateResults();
+            
+            // Scroll to show the message
+            selectionMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+        
+        // Handle back to options button
+        backToOptionsBtn.addEventListener('click', function() {
+            otherFoodInput.classList.remove('show');
+            otherFoodText.value = "";
+            customFoodText = "";
+            
+            // Deselect the "Other" option
+            foodOptions.forEach(opt => {
+                if (opt.getAttribute('data-food') === "other") {
+                    opt.classList.remove('selected');
+                }
+            });
+            
+            selectedFood = null;
+            selectionMessage.textContent = "";
+            selectionMessage.classList.remove('show');
         });
         
         // Handle continue to dates button
@@ -497,7 +615,8 @@
                     
                     // Add a cute message
                     setTimeout(() => {
-                        finalMessage.textContent = `Perfect! We'll have ${getFoodName(selectedFood)} on...`;
+                        const foodDisplayName = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
+                        finalMessage.textContent = `Perfect! We'll have ${foodDisplayName} on...`;
                         finalMessage.classList.add('show');
                     }, 500);
                     
@@ -521,7 +640,8 @@
                 selectedDate = this.getAttribute('data-date');
                 
                 // Show final confirmation message
-                finalMessage.innerHTML = `Perfect! We'll have ${getFoodName(selectedFood)} on <strong>${getDateName(selectedDate)}</strong>!<br><br>I can't wait for our special date! 💖😻`;
+                const foodDisplayName = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
+                finalMessage.innerHTML = `Perfect! We'll have ${foodDisplayName} on <strong>${getDateName(selectedDate)}</strong>!<br><br>I can't wait for our special date! 💖😻`;
                 finalMessage.classList.add('show');
                 
                 // Show share button
@@ -566,7 +686,8 @@
                 thai: "Thai (Garden of Eden) 🍜",
                 indian: "Indian 🍛",
                 chinese: "Chinese 🥡",
-                javanese: "Javanese 🍚"
+                javanese: "Javanese 🍚",
+                other: customFoodText || "Something special"
             };
             return foodNames[foodKey] || "delicious food";
         }
@@ -585,41 +706,43 @@
             let resultsText = "";
             
             if (selectedFood && selectedDate) {
+                const foodDisplay = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
                 resultsText = `
-                <strong>🎉 Valentine Selection Results 🎉</strong><br><br>
-                <strong>Food Choice:</strong> ${getFoodName(selectedFood)}<br>
-                <strong>Date Choice:</strong> ${getDateName(selectedDate)}<br>
-                <strong>Time:</strong> ${new Date().toLocaleString()}<br><br>
-                <em>She said YES to being your Valentine! 💖</em>
+                <strong>Your Valentine Date Choices:</strong><br><br>
+                <strong>💖 Food Choice:</strong> ${foodDisplay}<br>
+                <strong>📅 Date Choice:</strong> ${getDateName(selectedDate)}<br><br>
+                <em>You said YES to being my Valentine! 💕</em>
                 `;
             } else if (selectedFood) {
+                const foodDisplay = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
                 resultsText = `
-                <strong>Partial Results:</strong><br>
-                <strong>Food Choice:</strong> ${getFoodName(selectedFood)}<br>
-                <em>No date selected yet...</em>
+                <strong>Food Choice Selected:</strong><br>
+                <strong>🍽️ Food:</strong> ${foodDisplay}<br>
+                <em>No date selected yet... please choose a date! 🗓️</em>
                 `;
             } else {
                 resultsText = "No selections made yet...";
             }
             
-            secretResults.innerHTML = resultsText;
+            resultsContent.innerHTML = resultsText;
         }
         
         // Share results function
         function shareResults() {
-            const resultsText = `
-VALENTINE SELECTION RESULTS 💖
+            const foodDisplay = selectedFood === "other" ? customFoodText : getFoodName(selectedFood).replace(/[^\w\s]/gi, '');
+            
+            const resultsText = `💖 VALENTINE DATE PLANS 💖
 
-Food Choice: ${getFoodName(selectedFood)}
-Date Choice: ${getDateName(selectedDate)}
-Selected at: ${new Date().toLocaleString()}
+Your food choice: ${foodDisplay}
+Your date choice: ${getDateName(selectedDate)}
 
-She said YES to being your Valentine! 💕
-            `;
+You said YES to being my Valentine! 💕
+
+Copy this and send it to your lovely husband! 😘`;
             
             // Copy to clipboard
             navigator.clipboard.writeText(resultsText).then(() => {
-                alert("Results copied to clipboard! 📋\n\nPaste them somewhere safe (like a text to yourself)");
+                alert("Results copied to clipboard! 📋\n\nNow send it to your amazing husband so he can plan your perfect date! 💕");
             }).catch(err => {
                 // Fallback for older browsers
                 const textArea = document.createElement('textarea');
@@ -628,7 +751,7 @@ She said YES to being your Valentine! 💕
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                alert("Results copied to clipboard! 📋");
+                alert("Results copied to clipboard! 📋\n\nNow send it to your amazing husband so he can plan your perfect date! 💕");
             });
         }
         
@@ -674,6 +797,13 @@ She said YES to being your Valentine! 💕
                     img.src = gifUrl;
                 }
             });
+        });
+        
+        // Enter key support for other food input
+        otherFoodText.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                confirmOtherFoodBtn.click();
+            }
         });
     </script>
 </body>
