@@ -353,53 +353,53 @@
                     <div class="food-img">🍚</div>
                     <div class="food-name">Javanese</div>
                 </div>
-                <div class="food-option" data-food="other">
+                <div class="food-option" data-food="iets-anders">
                     <div class="food-img">✨</div>
-                    <div class="food-name">Other</div>
+                    <div class="food-name">Iets Anders</div>
                 </div>
             </div>
             
-            <!-- Other food input section -->
+            <!-- Iets anders food input section -->
             <div class="other-food-input" id="otherFoodInput">
-                <div class="input-label">Ooooh, something special! What would you like? 🥰</div>
-                <input type="text" id="otherFoodText" placeholder="Type your favorite food here..." maxlength="50">
+                <div class="input-label">Ooooh, iets speciaals! Wat zou je graag willen? 🥰</div>
+                <input type="text" id="otherFoodText" placeholder="Typ hier je favoriete eten..." maxlength="50">
                 <div class="nav-buttons" style="margin-top: 20px;">
-                    <button class="nav-btn" id="confirmOtherFoodBtn">Confirm 💖</button>
-                    <button class="nav-btn" id="backToOptionsBtn" style="background-color: #a5b4fc;">Back to Options</button>
+                    <button class="nav-btn" id="confirmOtherFoodBtn">Bevestig 💖</button>
+                    <button class="nav-btn" id="backToOptionsBtn" style="background-color: #a5b4fc;">Terug naar Opties</button>
                 </div>
             </div>
             
-            <p class="food-counter">9 delicious options to choose from! 😋</p>
+            <p class="food-counter">9 heerlijke opties om uit te kiezen! 😋</p>
             
             <div class="selection-message" id="selectionMessage"></div>
             
             <div class="nav-buttons" id="foodNavButtons" style="display: none;">
-                <button class="nav-btn" id="continueToDatesBtn">Continue to Dates</button>
+                <button class="nav-btn" id="continueToDatesBtn">Doorgaan naar Datums</button>
             </div>
         </div>
         
         <div class="date-selection" id="dateSelection">
-            <h2>Perfect! Now pick a date for our dinner 🗓️💕</h2>
+            <h2>Perfect! Nu een datum kiezen voor ons diner 🗓️💕</h2>
             <p style="font-size: 1.4rem; margin: 15px 0 10px;">
-                Choose when you'd like to have our special Valentine dinner:
+                Kies wanneer je ons speciale Valentijnsdiner wilt hebben:
             </p>
             <p style="font-size: 1.2rem; color: #ec4899; margin-bottom: 15px;">
-                (Pick one date for our romantic evening!)
+                (Kies één datum voor onze romantische avond!)
             </p>
             
             <div class="date-options">
                 <div class="date-option" data-date="feb6">
                     <div class="date-img">📅</div>
                     <div class="date-name">
-                        Friday, February 6th
-                        <div class="date-details">at 18:00</div>
+                        Vrijdag 6 Februari
+                        <div class="date-details">om 18:00</div>
                     </div>
                 </div>
                 <div class="date-option" data-date="feb13">
                     <div class="date-img">💖</div>
                     <div class="date-name">
-                        Friday, February 13th
-                        <div class="date-details">at 18:00</div>
+                        Vrijdag 13 Februari
+                        <div class="date-details">om 18:00</div>
                     </div>
                 </div>
             </div>
@@ -407,25 +407,25 @@
             <div class="final-message" id="finalMessage"></div>
             
             <div class="nav-buttons" id="dateNavButtons" style="display: none;">
-                <button class="nav-btn" id="backToFoodBtn">Back to Food</button>
-                <button class="nav-btn" id="shareResultsBtn" style="display: none;">Share Results 💌</button>
+                <button class="nav-btn" id="backToFoodBtn">Terug naar Eten</button>
+                <button class="nav-btn" id="shareResultsBtn" style="display: none;">Deel Resultaten 💌</button>
             </div>
         </div>
         
         <!-- Results display -->
         <div class="results-container" id="resultsContainer">
-            <h3>🎉 Valentine Date Results 🎉</h3>
+            <h3>🎉 Valentijn Date Resultaten 🎉</h3>
             <div class="results-content" id="resultsContent">
-                No selections made yet...
+                Nog geen selecties gemaakt...
             </div>
-            <button id="shareBtn" onclick="shareResults()">📋 Copy Results & Send to Your Lovely Husband!</button>
+            <button id="shareBtn" onclick="shareResults()">📋 Kopieer Resultaten & Stuur naar Je Lieve Man!</button>
             <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
-                Copy the text above and send it to your amazing husband! He's waiting to plan your perfect date! 💕
+                Kopieer de tekst hierboven en stuur het naar je geweldige man! Hij kan niet wachten om jullie perfecte date te plannen! 💕
             </p>
         </div>
         
         <div class="footer">
-            <p>Made with <span class="heart">💖</span> for the most amazing wife in the world</p>
+            <p>Gemaakt met <span class="heart">💖</span> voor de meest geweldige vrouw ter wereld</p>
             <p style="margin-top: 10px; font-size: 1rem;">P.S. Poes zegt "Meow" (omdat dat ook "I love you" betekent in cat language hehe)</p>
         </div>
     </div>
@@ -451,7 +451,7 @@
         const resultsContent = document.getElementById('resultsContent');
         const catGif = document.querySelector('.cat-gif');
         
-        // Other food elements
+        // Iets anders food elements
         const otherFoodInput = document.getElementById('otherFoodInput');
         const otherFoodText = document.getElementById('otherFoodText');
         const confirmOtherFoodBtn = document.getElementById('confirmOtherFoodBtn');
@@ -525,8 +525,8 @@
                 // Get the selected food
                 selectedFood = this.getAttribute('data-food');
                 
-                // Show the input field if "Other" is selected
-                if (selectedFood === "other") {
+                // Show the input field if "iets-anders" is selected
+                if (selectedFood === "iets-anders") {
                     otherFoodInput.classList.add('show');
                     foodNavButtons.style.display = "none";
                     selectionMessage.textContent = "";
@@ -545,7 +545,7 @@
                         indian: "Indian 🍛",
                         chinese: "Chinese 🥡",
                         javanese: "Javanese 🍚",
-                        other: "Something special! ✨"
+                        "iets-anders": "Iets speciaals! ✨"
                     };
                     
                     // Show selection message
@@ -564,16 +564,16 @@
             });
         });
         
-        // Handle confirm other food button
+        // Handle confirm iets anders food button
         confirmOtherFoodBtn.addEventListener('click', function() {
             if (otherFoodText.value.trim() === "") {
-                alert("Please tell me what you'd like to eat! 🥺");
+                alert("Vertel me alsjeblieft wat je zou willen eten! 🥺");
                 otherFoodText.focus();
                 return;
             }
             
             customFoodText = otherFoodText.value.trim();
-            selectionMessage.textContent = `Heerlijk! "${customFoodText}" it is! 💖 What a creative choice!`;
+            selectionMessage.textContent = `Heerlijk! "${customFoodText}" it is! 💖 Wat een creatieve keuze!`;
             selectionMessage.classList.add('show');
             
             // Hide input and show continue button
@@ -593,9 +593,9 @@
             otherFoodText.value = "";
             customFoodText = "";
             
-            // Deselect the "Other" option
+            // Deselect the "Iets Anders" option
             foodOptions.forEach(opt => {
-                if (opt.getAttribute('data-food') === "other") {
+                if (opt.getAttribute('data-food') === "iets-anders") {
                     opt.classList.remove('selected');
                 }
             });
@@ -615,7 +615,7 @@
                     
                     // Add a cute message
                     setTimeout(() => {
-                        const foodDisplayName = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
+                        const foodDisplayName = selectedFood === "iets-anders" ? `"${customFoodText}"` : getFoodName(selectedFood);
                         finalMessage.textContent = `Perfect! We'll have ${foodDisplayName} on...`;
                         finalMessage.classList.add('show');
                     }, 500);
@@ -640,8 +640,8 @@
                 selectedDate = this.getAttribute('data-date');
                 
                 // Show final confirmation message
-                const foodDisplayName = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
-                finalMessage.innerHTML = `Perfect! We'll have ${foodDisplayName} on <strong>${getDateName(selectedDate)}</strong>!<br><br>I can't wait for our special date! 💖😻`;
+                const foodDisplayName = selectedFood === "iets-anders" ? `"${customFoodText}"` : getFoodName(selectedFood);
+                finalMessage.innerHTML = `Perfect! We'll have ${foodDisplayName} on <strong>${getDateName(selectedDate)}</strong>!<br><br>Ik kan niet wachten op onze speciale date! 💖😻`;
                 finalMessage.classList.add('show');
                 
                 // Show share button
@@ -687,18 +687,18 @@
                 indian: "Indian 🍛",
                 chinese: "Chinese 🥡",
                 javanese: "Javanese 🍚",
-                other: customFoodText || "Something special"
+                "iets-anders": customFoodText || "Iets speciaals"
             };
-            return foodNames[foodKey] || "delicious food";
+            return foodNames[foodKey] || "heerlijk eten";
         }
         
         // Helper function to get date name
         function getDateName(dateKey) {
             const dateNames = {
-                feb6: "Friday, February 6th at 18:00",
-                feb13: "Friday, February 13th at 18:00"
+                feb6: "Vrijdag 6 Februari om 18:00",
+                feb13: "Vrijdag 13 Februari om 18:00"
             };
-            return dateNames[dateKey] || "a special date";
+            return dateNames[dateKey] || "een speciale datum";
         }
         
         // Update results display
@@ -706,22 +706,22 @@
             let resultsText = "";
             
             if (selectedFood && selectedDate) {
-                const foodDisplay = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
+                const foodDisplay = selectedFood === "iets-anders" ? `"${customFoodText}"` : getFoodName(selectedFood);
                 resultsText = `
-                <strong>Your Valentine Date Choices:</strong><br><br>
-                <strong>💖 Food Choice:</strong> ${foodDisplay}<br>
-                <strong>📅 Date Choice:</strong> ${getDateName(selectedDate)}<br><br>
-                <em>You said YES to being my Valentine! 💕</em>
+                <strong>Jouw Valentijn Date Keuzes:</strong><br><br>
+                <strong>💖 Eet Keuze:</strong> ${foodDisplay}<br>
+                <strong>📅 Datum Keuze:</strong> ${getDateName(selectedDate)}<br><br>
+                <em>Je zei JA tegen mijn Valentijn! 💕</em>
                 `;
             } else if (selectedFood) {
-                const foodDisplay = selectedFood === "other" ? `"${customFoodText}"` : getFoodName(selectedFood);
+                const foodDisplay = selectedFood === "iets-anders" ? `"${customFoodText}"` : getFoodName(selectedFood);
                 resultsText = `
-                <strong>Food Choice Selected:</strong><br>
-                <strong>🍽️ Food:</strong> ${foodDisplay}<br>
-                <em>No date selected yet... please choose a date! 🗓️</em>
+                <strong>Eet Keuze Geselecteerd:</strong><br>
+                <strong>🍽️ Eten:</strong> ${foodDisplay}<br>
+                <em>Nog geen datum gekozen... kies alsjeblieft een datum! 🗓️</em>
                 `;
             } else {
-                resultsText = "No selections made yet...";
+                resultsText = "Nog geen selecties gemaakt...";
             }
             
             resultsContent.innerHTML = resultsText;
@@ -729,20 +729,20 @@
         
         // Share results function
         function shareResults() {
-            const foodDisplay = selectedFood === "other" ? customFoodText : getFoodName(selectedFood).replace(/[^\w\s]/gi, '');
+            const foodDisplay = selectedFood === "iets-anders" ? customFoodText : getFoodName(selectedFood).replace(/[^\w\s]/gi, '');
             
-            const resultsText = `💖 VALENTINE DATE PLANS 💖
+            const resultsText = `💖 VALENTIJN DATE PLANNEN 💖
 
-Your food choice: ${foodDisplay}
-Your date choice: ${getDateName(selectedDate)}
+Jouw eet keuze: ${foodDisplay}
+Jouw datum keuze: ${getDateName(selectedDate)}
 
-You said YES to being my Valentine! 💕
+Je zei JA tegen mijn Valentijn! 💕
 
-Copy this and send it to your lovely husband! 😘`;
+Kopieer dit en stuur het naar je lieve man! 😘`;
             
             // Copy to clipboard
             navigator.clipboard.writeText(resultsText).then(() => {
-                alert("Results copied to clipboard! 📋\n\nNow send it to your amazing husband so he can plan your perfect date! 💕");
+                alert("Resultaten gekopieerd! 📋\n\nStuur het nu naar je geweldige man zodat hij jullie perfecte date kan plannen! 💕");
             }).catch(err => {
                 // Fallback for older browsers
                 const textArea = document.createElement('textarea');
@@ -751,7 +751,7 @@ Copy this and send it to your lovely husband! 😘`;
                 textArea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textArea);
-                alert("Results copied to clipboard! 📋\n\nNow send it to your amazing husband so he can plan your perfect date! 💕");
+                alert("Resultaten gekopieerd! 📋\n\nStuur het nu naar je geweldige man zodat hij jullie perfecte date kan plannen! 💕");
             });
         }
         
@@ -799,7 +799,7 @@ Copy this and send it to your lovely husband! 😘`;
             });
         });
         
-        // Enter key support for other food input
+        // Enter key support for iets anders food input
         otherFoodText.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 confirmOtherFoodBtn.click();
